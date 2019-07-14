@@ -79,6 +79,8 @@ THIRD_PARTY_APPS = [
     'graphene_django',
     'markdownx',
     'taggit',
+    'photologue',
+    'sortedm2m',
 ]
 LOCAL_APPS = [
     'bootcamp.users.apps.UsersConfig',
