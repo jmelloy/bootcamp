@@ -277,3 +277,5 @@ CHANNEL_LAYERS = {
 GRAPHENE = {
     'SCHEMA': 'bootcamp.schema.schema'
 }
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
