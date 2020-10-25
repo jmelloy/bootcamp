@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from .views import PhotoListView, PhotoDetailView, GalleryListView, \
     GalleryDetailView, PhotoArchiveIndexView, PhotoDateDetailView, PhotoDayArchiveView, \
     PhotoYearArchiveView, PhotoMonthArchiveView, GalleryArchiveIndexView, GalleryYearArchiveView, \
-    GalleryDateDetailView, GalleryDayArchiveView, GalleryMonthArchiveView
+    GalleryDateDetailView, GalleryDayArchiveView, GalleryMonthArchiveView, GalleryCreateView
 
 """NOTE: the url names are changing. In the long term, I want to remove the 'pl-'
 prefix on all urls, and instead rely on an application namespace 'photologue'.
@@ -41,9 +41,13 @@ urlpatterns = [
         name='pl-photologue-root'),
     url(r'^gallery/(?P<slug>[\-\d\w]+)/$',
         GalleryDetailView.as_view(), name='pl-gallery'),
+
     url(r'^gallerylist/$',
         GalleryListView.as_view(),
         name='gallery-list'),
+    url(r'^gallery/create$',
+        GalleryCreateView.as_view(),
+        name='gallery-create'),
 
     url(r'^photo/(?P<year>\d{4})/(?P<month>[0-9]{2})/(?P<day>\w{1,2})/(?P<slug>[\-\d\w]+)/$',
         PhotoDateDetailView.as_view(month_format='%m'),

@@ -178,6 +178,7 @@ class Gallery(models.Model):
                                    blank=True)
 
     objects = GalleryQuerySet.as_manager()
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['-date_added']
@@ -187,6 +188,11 @@ class Gallery(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('photologue:pl-gallery', args=[self.slug])
@@ -235,7 +241,6 @@ class Gallery(models.Model):
         return self.photos.filter(is_public=True) \
             .exclude(sites__id__in=self.sites.all())
 
-
 class ImageModel(models.Model):
     image = models.ImageField(_('image'),
                               max_length=IMAGE_FIELD_MAX_LENGTH,
@@ -258,6 +263,8 @@ class ImageModel(models.Model):
                                related_name="%(class)s_related",
                                verbose_name=_('effect'),
                                on_delete=models.CASCADE)
+
+    exif_data = models.JSONField(null=True)
 
     class Meta:
         abstract = True
@@ -483,6 +490,8 @@ class ImageModel(models.Model):
         if self.date_taken is None or image_has_changed:
             # Attempt to get the date the photo was taken from the EXIF data.
             try:
+                self.exif_data = self.EXIF(self.image_file)
+
                 exif_date = self.EXIF(self.image.file).get('EXIF DateTimeOriginal', None)
                 if exif_date is not None:
                     d, t = exif_date.values.split()

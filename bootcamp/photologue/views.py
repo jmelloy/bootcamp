@@ -2,12 +2,20 @@ from django.views.generic.dates import ArchiveIndexView, DateDetailView, DayArch
     YearArchiveView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
 
 from .models import Photo, Gallery
 
 
 # Gallery views.
 
+class GalleryCreateView(CreateView):
+    model = Gallery
+    fields = ["title", "description", "photos"]
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
 
 class GalleryListView(ListView):
     queryset = Gallery.objects.on_site().is_public()

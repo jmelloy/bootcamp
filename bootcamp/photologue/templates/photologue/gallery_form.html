@@ -1,0 +1,24 @@
+{% extends "photologue/root.html" %}
+{% load i18n %}
+
+{% block title %}New Gallery{% endblock %}
+
+{% block content %}
+
+    <div class="row col-lg-12">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Title</label><br/>
+                <input type="text" name="title" maxlength="250" required id="id_title">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label><br/>
+                <textarea name="description" cols="34" rows="5" id="id_description"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+{% endblock %}

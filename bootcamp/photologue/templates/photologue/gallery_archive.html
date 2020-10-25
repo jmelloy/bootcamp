@@ -10,7 +10,6 @@
     </div>
 
 	<div class="row">
-	
 		<aside class="col-md-2">
 
 			<h4>{% trans "Filter by year" %}</h4>
@@ -23,7 +22,9 @@
 		</aside>
 
 		<main class="col-md-10">
-			
+			<div>
+                <a href="{% url 'photologue:gallery-create' %}">Create New Gallery</a>
+            </div>
 			{% if latest %}
 			    {% for gallery in latest %}
 			    	{% include "photologue/includes/gallery_sample.html" %}

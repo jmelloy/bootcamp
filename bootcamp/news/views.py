@@ -107,3 +107,7 @@ def update_interactions(request):
     news = News.objects.get(pk=data_point)
     data = {"likes": news.count_likers(), "comments": news.count_thread()}
     return JsonResponse(data)
+
+def status(request):
+    print("IP Address for debug-toolbar: " + request.META['REMOTE_ADDR'])
+    return JsonResponse(request.META)
