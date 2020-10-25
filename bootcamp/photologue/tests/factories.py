@@ -5,7 +5,6 @@ import datetime
 
 from django.utils.text import slugify
 from django.utils.timezone import utc
-from django.utils import six
 from django.conf import settings
 try:
     import factory
@@ -13,7 +12,7 @@ except ImportError:
     raise ImportError(
         "No module named factory. To run photologue's tests you need to install factory-boy.")
 
-from ..models import Gallery, ImageModel, Photo, PhotoSize
+from ..models import Gallery, ImageModel, Photo, PhotoEffect, PhotoSize
 
 RES_DIR = os.path.join(os.path.dirname(__file__), '../res')
 LANDSCAPE_IMAGE_PATH = os.path.join(RES_DIR, 'test_photologue_landscape.jpg')
@@ -33,7 +32,7 @@ class GalleryFactory(factory.django.DjangoModelFactory):
         model = Gallery
 
     title = factory.Sequence(lambda n: 'gallery{0:0>3}'.format(n))
-    slug = factory.LazyAttribute(lambda a: slugify(six.text_type(a.title)))
+    slug = factory.LazyAttribute(lambda a: slugify(a.title))
 
     @factory.sequence
     def date_added(n):
@@ -78,7 +77,7 @@ class PhotoFactory(ImageModelFactory):
         model = Photo
 
     title = factory.Sequence(lambda n: 'photo{0:0>3}'.format(n))
-    slug = factory.LazyAttribute(lambda a: slugify(six.text_type(a.title)))
+    slug = factory.LazyAttribute(lambda a: slugify(a.title))
     image = factory.django.ImageField(from_path=LANDSCAPE_IMAGE_PATH)
 
     @factory.sequence
@@ -113,3 +112,11 @@ class PhotoSizeFactory(factory.django.DjangoModelFactory):
         model = PhotoSize
 
     name = factory.Sequence(lambda n: 'name{0:0>3}'.format(n))
+
+
+class PhotoEffectFactory(factory.django.DjangoModelFactory):
+
+    class Meta:
+        model = PhotoEffect
+
+    name = factory.Sequence(lambda n: 'effect{0:0>3}'.format(n))
