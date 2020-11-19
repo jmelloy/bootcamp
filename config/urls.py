@@ -4,9 +4,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
-from bootcamp.news.views import status
-
+from config.rest import router
 from graphene_django.views import GraphQLView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView
+)
 
 urlpatterns = [
     url(r"^$", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -36,8 +40,15 @@ urlpatterns = [
     url(r"^search/", include("bootcamp.search.urls", namespace="search")),
 
     url(r"^photos/", include('photologue.urls', namespace='photos')),
-    url(r"^status/", status),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    url(r'api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    url(r'api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    url(r'api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
+    url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^api/', include(router.urls)),
+
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development

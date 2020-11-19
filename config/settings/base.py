@@ -82,6 +82,7 @@ THIRD_PARTY_APPS = [
     "taggit",
     'photologue',
     'sortedm2m',
+    'rest_framework'
 ]
 LOCAL_APPS = [
     "bootcamp.users.apps.UsersConfig",
@@ -114,6 +115,22 @@ AUTH_USER_MODEL = "users.User"
 LOGIN_REDIRECT_URL = "news:list"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = "account_login"
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
